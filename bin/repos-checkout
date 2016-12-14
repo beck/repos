@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -eu
+cd "$(dirname "$0")/../.."
+
+update_repos ()
+{
+    echo "Fetching list of repos..."
+    repos/venv/bin/python repos/repos.py > repos/repos.txt
+}
+
+checkout ()
+{
+    if [ -d "$1" ]
+    then
+        echo -e "\033[92m✔\033[0m $1"
+    else
+        echo
+        hub clone "warbyparker/$1"
+        echo
+    fi
+}
+
+main () {
+    source repos/secret
+    update_repos
+    while read repo
+    do
+        checkout "$repo"
+    done < repos/repos.txt
+}
+
+main
