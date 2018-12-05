@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -u
+cd "$(dirname "$0")/../.."
+
+main () {
+    for repo in ./*; do
+        if [ ! -d "$repo/.git" ]; then
+            continue
+        fi
+        cd "$repo"
+        echo -n "$(basename $repo)..."
+        out=$(git checkout -q master 2>&1)
+        if [ ! -z "$out" ]; then
+            echo -e "\033[31m✘\033[0m\n$out\n"
+            cd ..
+            continue
+        fi
+        out=$(git pull 2>&1)
+        if [ "$out" = "Already up to date." ]; then
+            echo -e "\033[92m✔\033[0m"
+            cd ..
+            continue
+        fi
+        echo -e "\n$out\n"
+        cd ..
+    done
+}
+
+main

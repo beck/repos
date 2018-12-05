@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -u
+cd "$(dirname "$0")/../.."
+
+main () {
+    for repo in ./*; do
+        if [ ! -d "$repo/.git" ]; then
+            continue
+        fi
+        cd "$repo"
+        echo -e "\033[92m"$(pwd)"\033[0m"
+        git grep -i "$*"
+        if [ $? -eq 0 ]; then
+            echo
+        fi
+        cd ..
+    done
+}
+
+main "$*"
