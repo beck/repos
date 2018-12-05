@@ -28,5 +28,6 @@ export PATH="$PATH:$HOME/projects/repos/bin"
 ## Available bins
 
 * `repos-checkout` - clone all
+* `repos-history-search` - search the log
 * `repos-pull` - checkout master and pull
 * `repos-search` - git grep

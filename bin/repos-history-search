@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu
+cd "$(dirname "$0")/../.."
+
+main () {
+    for repo in ./*; do
+        if [ ! -d "$repo/.git" ]; then
+            continue
+        fi
+        cd "$repo"
+        echo -e "\033[92m"$(pwd)"\033[0m"
+        git log -S "$*"
+        cd ..
+    done
+}
+
+main "$*"
